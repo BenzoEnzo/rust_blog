@@ -9,12 +9,12 @@ pub struct Blog {
 }
 
 impl Blog {
-    pub fn new(title: String, date: u32, content: String, tags: Vec<String>) -> 
+    pub fn new(title: String, date: u32, content: String, tags: Vec<String>) -> Self {
         Self {
             title,
             date,
             content,
             tags
         }
-    
-}
+   }
+}   
