@@ -10,20 +10,23 @@ thread_local! {
 
 #[ic_cdk::update]
 fn add_blog(title: String, content: String, tags: Vec<String>) -> Result<Blog, String> {
-    if title.len() > 250 {
-        return Err("Title is too long!".to_string())
+    match (title.len() > 250, content.len() > 500, tags.len() > 3) {
+        (true, _, _) => Err("Title is too long!".to_string()),
+        (_, true, _) => Err("Content is too long!".to_string()),
+        (_, _, true) => Err("Too many tags! The maximum is 3.".to_string()),
+        _ => {
+            let blog = Blog::new(title, content, tags);
+            BLOGS.with(|blogs| blogs.borrow_mut().push(blog));
+
+            let last_blog = BLOGS.with(|blogs| 
+                blogs.borrow()
+                .last()
+                .expect("Vec should not be empty")
+                .clone());
+
+            Ok(last_blog)
+        }
     }
-
-    let blog = Blog::new(title, content, tags);
-    BLOGS.with(|blogs| blogs.borrow_mut().push(blog));
-
-    let last_blog = BLOGS.with(|blogs| 
-        blogs.borrow()
-        .last()
-        .expect("Vec should not be empty")
-        .clone());
-        
-    Ok(last_blog)
 }
 
 #[ic_cdk::query]
