@@ -6,7 +6,7 @@ type Blog = record {
 };
 
 type Result = variant {
- Ok: text; Err: text;
+ Ok: Blog; Err: text;
 };
 
 service : {
