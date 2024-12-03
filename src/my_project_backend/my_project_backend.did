@@ -3,7 +3,11 @@ type Blog = record {
     date: nat64;
     content: text;
     tags: vec text;
-}
+};
+
+type Result = variant {
+ Ok: text; Err: text;
+};
 
 service : {
     "greet": (text) -> (text) query;
