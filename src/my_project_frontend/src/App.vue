@@ -1,15 +1,18 @@
 <script setup>
 import { ref } from 'vue';
 import { my_project_backend } from 'declarations/my_project_backend/index';
-let greeting = ref('');
+
 
 async function handleSubmit(e) {
   e.preventDefault();
   const target = e.target;
-  const name = target.querySelector('#name').value;
-  await my_project_backend.greet(name).then((response) => {
-    greeting.value = response;
-  });
+  const title = target.querySelector('#title').value;
+  const content = target.querySelector('#content').value;
+  const tags = target.querySelector('#tags').value;
+
+  const splitedTags = tags.split(",");
+
+  await my_project_backend.add_blog(title,content,splitedTags);
 }
 </script>
 
@@ -19,10 +22,19 @@ async function handleSubmit(e) {
     <br />
     <br />
     <form action="#" @submit="handleSubmit">
-      <label for="name">Enter your name: &nbsp;</label>
-      <input id="name" alt="Name" type="text" />
-      <button type="submit">Click Me!</button>
+      <div>
+      <p>title:</p>
+      <input id="title" alt="title" type="text" />
+      </div>
+      <div>
+      <p>content:</p>
+      <input id="content" alt="content" type="text" />
+      </div>
+      <div>
+      <p>tags:</p>
+      <input id="tags" alt="tags" type="text" />
+      </div>
+      <button type="submit">Click to add!</button>
     </form>
-    <section id="greeting">{{ greeting }}</section>
   </main>
 </template>
